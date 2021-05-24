@@ -119,15 +119,4 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-  - job: RunLoadTests
-    dependsOn: Deploy
-    displayName: 'Run load tests'
-    pool:
-      name: Windows DGO PC
-    variables:
-    - group: Release
-    steps:
-    - script: C:\DGO\Brewolution\apache-jmeter-5.4.1\bin\ApacheJMeter.jar -n -t LoadTest.jmx -o Result.xml -Jhostname=$(STAGING_HOSTNAME)
-      displayName: 'Run Load tests'
-
 
