@@ -3,42 +3,23 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
+  wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
+  dotnetSdkVersion: '3.1.100'
+  releaseBranchName: 'blue-green'
 
 stages:
 - stage: 'Build'
-  displayName: 'Build the web application'
-  jobs: 
+  displayName: 'Build the web app'
+  jobs:
   - job: 'Build'
-    displayName: 'Build job'
+    displayName: 'Build Job'
     pool:
-      vmImage: 'ubuntu-18.04'
-      demands:
-      - npm
-
-    variables:
-      wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
-      dotnetSdkVersion: '3.1.300'
-
+      name: Windows DGO PC
     steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
         version: '$(dotnetSdkVersion)'
-
-    - task: Npm@1
-      displayName: 'Run npm install'
-      inputs:
-        verbose: false
-
-    - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
-      displayName: 'Compile Sass assets'
-
-    - task: gulp@1
-      displayName: 'Run gulp tasks'
-
-    - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
-      displayName: 'Write build info'
-      workingDirectory: $(wwwrootDir)
 
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
@@ -54,24 +35,30 @@ stages:
         projects: '**/*.csproj'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Publish the project - $(buildConfiguration)'
+      displayName: 'Publish the project - Release'
       inputs:
         command: 'publish'
-        projects: '**/*.csproj'
+        projects: '$(System.DefaultWorkingDirectory)/**/Tailspin.SpaceGame.Web.csproj'
         publishWebProjects: false
-        arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+        arguments: '--no-build --configuration Release --output "$(Build.ArtifactStagingDirectory)/Release"'
         zipAfterPublish: true
 
-    - publish: '$(Build.ArtifactStagingDirectory)'
-      artifact: drop
-
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      condition: succeeded()
 - stage: 'Dev'
-  displayName: 'Deploy to the dev environment'
+  displayName: 'Deploy the web application'
   dependsOn: Build
+  condition: |
+    and
+    (
+      succeeded(),
+      eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
+    )
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: Windows DGO PC
     environment: dev
     variables:
     - group: Release
@@ -87,14 +74,14 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-
 - stage: 'Test'
   displayName: 'Deploy to the test environment'
   dependsOn: Dev
+  #condition: eq(variables['Build.Reason'], 'Schedule')
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: Windows DGO PC
     environment: test
     variables:
     - group: 'Release'
@@ -110,14 +97,13 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-
 - stage: 'Staging'
   displayName: 'Deploy to the staging environment'
   dependsOn: Test
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: Windows DGO PC
     environment: staging
     variables:
     - group: 'Release'
@@ -133,3 +119,15 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+  - job: RunLoadTests
+    dependsOn: Deploy
+    displayName: 'Run load tests'
+    pool:
+      name: Windows DGO PC
+    variables:
+    - group: Release
+    steps:
+    - script: C:\DGO\Brewolution\apache-jmeter-5.4.1\bin\ApacheJMeter.jar -n -t LoadTest.jmx -o Result.xml -Jhostname=$(STAGING_HOSTNAME)
+      displayName: 'Run Load tests'
+
+
