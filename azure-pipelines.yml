@@ -129,12 +129,3 @@ stages:
     steps:
     - script: C:\DGO\Brewolution\apache-jmeter-5.4.1\bin\ApacheJMeter.jar -n -t LoadTest.jmx -o Result.xml -Jhostname=$(STAGING_HOSTNAME)
       displayName: 'Run Load tests'
-    - script: |
-        sudo apt-get update
-        sudo apt-get install xsltproc
-        xsltproc JMeter2JUnit.xsl Results.xml > JUnit.xml
-      displayName: 'Transform JMeter output to JUnit'
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: JUnit
-        testResultsFiles: JUnit.xml
