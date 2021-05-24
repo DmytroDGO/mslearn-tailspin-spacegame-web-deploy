@@ -124,6 +124,6 @@ stages:
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(LeaderboardAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.LeaderboardFunction.zip'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
               runtimeStack: DOCKER|microsoft/azure-functions-dotnet-core3.0:3.0
               startUpCommand: 'func azure functionapp publish $(functionAppName) --no-bundler'
