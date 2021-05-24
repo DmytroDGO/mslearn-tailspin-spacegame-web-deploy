@@ -7,7 +7,6 @@ variables:
   dotnetSdkVersion: '3.1.100'
   releaseBranchName: 'jmeter'
 
-
 stages:
 - stage: 'Build'
   displayName: 'Build the web app'
@@ -47,9 +46,6 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       condition: succeeded()
-
-
-
 - stage: 'Dev'
   displayName: 'Deploy the web application'
   dependsOn: Build
@@ -101,7 +97,6 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-
 - stage: 'Staging'
   displayName: 'Deploy to the staging environment'
   dependsOn: Test
@@ -124,5 +119,22 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-
-              
+  - job: RunLoadTests
+    dependsOn: Deploy
+    displayName: 'Run load tests'
+    pool:
+      name: Windows DGO PC
+    variables:
+    - group: Release
+    steps:
+    - script: C:\DGO\Brewolution\apache-jmeter-5.4.1\bin\ApacheJMeter.jar -n -t LoadTest.jmx -o Result.xml -Jhostname=$(STAGING_HOSTNAME)
+      displayName: 'Run Load tests'
+    - script: |
+        sudo apt-get update
+        sudo apt-get install xsltproc
+        xsltproc JMeter2JUnit.xsl Results.xml > JUnit.xml
+      displayName: 'Transform JMeter output to JUnit'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: JUnit
+        testResultsFiles: JUnit.xml
