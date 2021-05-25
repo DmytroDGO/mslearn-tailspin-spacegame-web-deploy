@@ -6,6 +6,7 @@ variables:
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
   dotnetSdkVersion: '3.1.100'
   releaseBranchName: 'selenium'
+  driverDir: 'C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1'
 
 
 stages:
@@ -95,7 +96,7 @@ stages:
           steps:
           - download: current
             artifact: drop
-          - task: AzureWebApp@1
+          - task: AzureWebApp@1proo
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource Manager - Tailspin - Space Game'
@@ -152,4 +153,3 @@ stages:
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
-              
