@@ -109,7 +109,7 @@ stages:
     variables:
     - group: 'Release'
 
-
+    steps: 
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
