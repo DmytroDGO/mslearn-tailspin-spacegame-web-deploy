@@ -111,7 +111,7 @@ stages:
     steps: 
     - task: CmdLine@2
       inputs:
-        script: 'set driverDir="C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
+        script: 'set driverDir="C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"'
 
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
