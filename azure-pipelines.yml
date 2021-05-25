@@ -109,20 +109,6 @@ stages:
     variables:
     - group: 'Release'
 
-    steps: 
-    - task: CmdLine@2
-      inputs:
-        script: 'set driverDir="C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"'
-    - task: CmdLine@2
-      inputs:
-        script: 'set ChromeWebDriver=%driverDir%'
-    - task: CmdLine@2
-      inputs:
-        script: 'set GeckoWebDriver=%driverDir%'
-    - task: CmdLine@2
-      inputs:
-        script: 'set EdgeWebDriver=%driverDir%'
-
 
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
