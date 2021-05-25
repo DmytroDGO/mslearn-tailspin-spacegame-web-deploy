@@ -8,7 +8,6 @@ variables:
   releaseBranchName: 'selenium'
   driverDir: 'C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1'
 
-
 stages:
 - stage: 'Build'
   displayName: 'Build the web app'
