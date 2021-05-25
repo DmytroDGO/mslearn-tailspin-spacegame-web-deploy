@@ -32,17 +32,17 @@ namespace UITests
                 {
                   case "Chrome":
                     driver = new ChromeDriver(
-                        "C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
+                        @"C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
                     );
                     break;
                   case "Firefox":
                     driver = new FirefoxDriver(
-                        "C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
+                        @"C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
                     );
                     break;
                   case "Edge":
                     driver = new EdgeDriver(
-                        "C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
+                        @"C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
                     );
                     break;
                   default:
