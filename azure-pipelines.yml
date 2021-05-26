@@ -128,7 +128,7 @@ stages:
       inputs:
         command: 'test'
         arguments: '--configuration $(buildConfiguration)'
-        publishTestResults: false
+        publishTestResults: true
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
       condition: succeededOrFailed()
 
