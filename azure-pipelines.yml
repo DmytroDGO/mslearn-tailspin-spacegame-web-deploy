@@ -114,12 +114,15 @@ stages:
       displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
         version: '$(dotnetSdkVersion)'
+
     - task: DotNetCoreCLI@2
       displayName: 'Build the project - $(buildConfiguration)'
       inputs:
         command: 'build'
         arguments: '--configuration $(buildConfiguration)'
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
+      condition: succeededOrFailed
+
     - task: DotNetCoreCLI@2
       displayName: 'Run UI tests - $(buildConfiguration)'
       inputs:
@@ -127,6 +130,7 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
         publishTestResults: false
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
+      condition: succeededOrFailed
 
 
 
