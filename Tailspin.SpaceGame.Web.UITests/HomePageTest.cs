@@ -80,7 +80,7 @@ namespace UITests
         {
             if (driver != null)
             {
-                driver.quit();
+                driver.Quit();
             }
         }
 
@@ -157,4 +157,3 @@ namespace UITests
         }
     }
 }
-
