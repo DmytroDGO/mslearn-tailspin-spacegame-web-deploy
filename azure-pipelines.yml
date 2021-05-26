@@ -121,7 +121,7 @@ stages:
         command: 'build'
         arguments: '--configuration $(buildConfiguration)'
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
-      condition: succeededOrFailed
+      condition: succeededOrFailed()
 
     - task: DotNetCoreCLI@2
       displayName: 'Run UI tests - $(buildConfiguration)'
@@ -130,7 +130,7 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
         publishTestResults: false
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
-      condition: succeededOrFailed
+      condition: succeededOrFailed()
 
 
 
