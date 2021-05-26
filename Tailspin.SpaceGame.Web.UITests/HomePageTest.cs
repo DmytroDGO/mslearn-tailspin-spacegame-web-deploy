@@ -1,7 +1,7 @@
 using Microsoft.Edge.SeleniumTools;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+//using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace UITests
 {
-    [TestFixture("Chrome")]
+    //[TestFixture("Chrome")]
     [TestFixture("Firefox")]
     [TestFixture("Edge")]
     public class HomePageTest
@@ -30,11 +30,11 @@ namespace UITests
                 // Create the driver for the current browser.
                 switch(browser)
                 {
-                  case "Chrome":
+                 /* case "Chrome":
                     driver = new ChromeDriver(
                         @"C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
                     );
-                    break;
+                    break;*/
                   case "Firefox":
                     driver = new FirefoxDriver(
                         @"C:\DGO\Brewolution\SW Git For Test\SW Sources\mslearn-tailspin-spacegame-web-deploy\Tailspin.SpaceGame.Web.UITests\bin\Release\netcoreapp3.1"
