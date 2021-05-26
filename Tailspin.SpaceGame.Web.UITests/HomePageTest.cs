@@ -80,7 +80,7 @@ namespace UITests
         {
             if (driver != null)
             {
-                driver.close();
+                driver.quit();
             }
         }
 
