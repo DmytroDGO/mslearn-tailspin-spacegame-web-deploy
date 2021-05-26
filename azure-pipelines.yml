@@ -122,7 +122,6 @@ stages:
         arguments: '--configuration $(buildConfiguration)'
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
       condition: succeededOrFailed()
-      continueOnError: true
 
     - task: DotNetCoreCLI@2
       displayName: 'Run UI tests - $(buildConfiguration)'
@@ -132,7 +131,6 @@ stages:
         publishTestResults: false
         projects: '$(System.DefaultWorkingDirectory)/**/*UITests.csproj'
       condition: succeededOrFailed()
-      continueOnError: true
 
 
 
@@ -140,7 +138,6 @@ stages:
   displayName: 'Deploy to the staging environment'
   dependsOn: Test
   condition: succeededOrFailed()
-  continueOnError: true
   jobs:
   - deployment: Deploy
     pool:
